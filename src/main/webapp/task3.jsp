@@ -7,14 +7,12 @@
 <table>
     <thead>
     <tr>
-        <th>Product</th>
         <th>Company</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach var="model" items="${result}">
         <tr>
-            <td>${model.product}</td>
             <td>${model.company}</td>
         </tr>
     </c:forEach>

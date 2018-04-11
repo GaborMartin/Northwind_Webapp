@@ -7,15 +7,17 @@
 <table>
     <thead>
     <tr>
-        <th>Product</th>
         <th>Company</th>
+        <th>Product</th>
+        <th>Price</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach var="model" items="${result}">
         <tr>
-            <td>${model.product}</td>
             <td>${model.company}</td>
+            <td>${model.product}</td>
+            <td>${model.price}</td>
         </tr>
     </c:forEach>
     </tbody>
