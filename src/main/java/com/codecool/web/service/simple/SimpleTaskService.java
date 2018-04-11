@@ -131,4 +131,17 @@ public class SimpleTaskService implements TaskService {
             throw new ServiceException("Invalid SQL operation!");
         }
     }
+
+    @Override
+    public List<Model> getTaskFiveFilteredResult(float price) throws ServiceException {
+        try {
+            List<Model> result = taskDao.getCheaperProducts(price);
+            if (result == null) {
+                throw new ServiceException("Invalid result!");
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new ServiceException("Invalid SQL operation!");
+        }
+    }
 }

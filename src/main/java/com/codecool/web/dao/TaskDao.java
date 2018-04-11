@@ -14,6 +14,8 @@ public interface TaskDao {
     List<Model> getTaskThreeResult()throws SQLException;
     List<Model> getCompanyByName(String companyName) throws SQLException;
     List<Model> getTaskFourResult()throws SQLException;
-    public List<Model> getOrderIdsByCustomerName(String companyName) throws SQLException;
+    List<Model> getOrderIdsByCustomerName(String companyName) throws SQLException;
     List<Model> getTaskFiveResult()throws SQLException;
+    List<Model> getCheaperProducts(float price) throws SQLException;
+
 }

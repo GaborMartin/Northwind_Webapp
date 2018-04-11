@@ -179,6 +179,31 @@ public class DatabaseTaskDao extends AbstractDao implements TaskDao {
         return result;
     }
 
+    @Override
+    public List<Model> getCheaperProducts(float price) throws SQLException {
+        List<Model> result = new ArrayList<>();
+        String sql = "SELECT suppliers.companyname AS company, products.productname AS product, products.unitprice AS price " +
+            "FROM suppliers " +
+            "JOIN products ON products.supplierid = suppliers.supplierid " +
+            "INNER JOIN (" +
+            "SELECT products.supplierid, " +
+            "MAX(products.unitprice) AS maxPrice " +
+            "FROM products " +
+            "GROUP BY supplierid " +
+            "HAVING MAX(products.unitprice)<?) AS b " +
+            "ON b.supplierid = suppliers.supplierid AND products.unitprice = b.maxPrice " +
+            "ORDER BY unitprice DESC, company ASC, product ASC";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setFloat(1, price);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(fetchTaskFive(resultSet));
+                }
+            }
+        }
+        return result;
+    }
+
     private Model fetchTaskOne(ResultSet resultSet) throws SQLException {
         String company = resultSet.getString("company");
         String product = resultSet.getString("product");

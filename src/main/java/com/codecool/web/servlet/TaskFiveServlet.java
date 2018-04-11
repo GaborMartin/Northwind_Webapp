@@ -22,12 +22,17 @@ public class TaskFiveServlet extends AbstractServlet {
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskDao taskDao = new DatabaseTaskDao(connection);
             TaskService taskService = new SimpleTaskService(taskDao);
-            List<Model> result = taskService.getResultOfTaskFive();
-            req.setAttribute("result", result);
+            String price = req.getParameter("filter");
+            if (price == null || price.equals("")) {
+                List<Model> result = taskService.getResultOfTaskFive();
+                req.setAttribute("result", result);
+            } else {
+                List<Model> filteredResult = taskService.getTaskFiveFilteredResult(Float.parseFloat(price));
+                req.setAttribute("result", filteredResult);
+            }
         } catch (SQLException | ServiceException e) {
             req.setAttribute("error", e.getMessage());
         }
-        req.getRequestDispatcher("task5.jsp").forward(req,resp);
+        req.getRequestDispatcher("task5.jsp").forward(req, resp);
     }
 }
-

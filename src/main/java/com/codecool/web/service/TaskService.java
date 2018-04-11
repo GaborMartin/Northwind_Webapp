@@ -17,4 +17,5 @@ public interface TaskService {
     List<Model> getResultOfTaskFour() throws ServiceException;
     List<Model> getTaskFourFilteredResult(String companyName) throws ServiceException;
     List<Model> getResultOfTaskFive() throws ServiceException;
+    List<Model> getTaskFiveFilteredResult(float price) throws ServiceException;
 }
