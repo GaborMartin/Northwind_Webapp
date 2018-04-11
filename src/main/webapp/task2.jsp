@@ -3,6 +3,11 @@
 <!doctype html>
 <html lang="en">
 <body>
+<form action="task2" method="get">
+    Filter:<br>
+    <input type="text" name="filter"><br>
+    <input type="submit" value="Filter">
+</form>
 <h1>Result:</h1>
 <table>
     <thead>
