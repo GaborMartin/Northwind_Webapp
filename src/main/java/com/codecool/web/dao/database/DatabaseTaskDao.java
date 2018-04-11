@@ -3,10 +3,7 @@ package com.codecool.web.dao.database;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.model.Model;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +29,23 @@ public class DatabaseTaskDao extends AbstractDao implements TaskDao {
         return result;
     }
 
+    public List<Model> getProductByCompany(String companyName) throws SQLException {
+        List<Model> result = new ArrayList<>();
+        String sql = "SELECT products.productname AS Product, suppliers.companyname AS Company " +
+            "FROM products, suppliers " +
+            "WHERE products.SupplierID = suppliers.SupplierID AND suppliers.companyname=? " +
+            "ORDER BY products.productname ASC, suppliers.companyname ASC";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, companyName);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(fetchTaskOne(resultSet));
+                }
+            }
+        }
+        return result;
+    }
+
     @Override
     public List<Model> getTaskTwoResult() throws SQLException {
         List<Model> result = new ArrayList<>();
@@ -44,6 +58,26 @@ public class DatabaseTaskDao extends AbstractDao implements TaskDao {
              ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {
                 result.add(fetchTaskTwo(resultSet));
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Model> getCompanyByNumberOfProducts(int numOfProducts) throws SQLException {
+        List<Model> result = new ArrayList<>();
+        String sql = "SELECT companyname AS Company, Count(products.supplierid) AS numberofproducts " +
+            "FROM suppliers " +
+            "JOIN products ON suppliers.supplierid=products.supplierid " +
+            "GROUP BY companyname " +
+            "HAVING Count(products.supplierid) = ? " +
+            "ORDER BY numberofproducts DESC, companyname ASC";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, numOfProducts);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(fetchTaskTwo(resultSet));
+                }
             }
         }
         return result;
@@ -68,6 +102,26 @@ public class DatabaseTaskDao extends AbstractDao implements TaskDao {
     }
 
     @Override
+    public List<Model> getCompanyByName(String companyName) throws SQLException {
+        List<Model> result = new ArrayList<>();
+        String sql = "SELECT companyname AS Company " +
+            "FROM suppliers " +
+            "JOIN products ON products.supplierid = suppliers.supplierid " +
+            "GROUP BY companyname " +
+            "HAVING COUNT(products.supplierid) = 5 AND companyname = ? " +
+            "ORDER BY companyname ASC";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, companyName);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(fetchTaskThree(resultSet));
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
     public List<Model> getTaskFourResult() throws SQLException {
         List<Model> result = new ArrayList<>();
         String sql = "SELECT customers.companyname AS company, array_to_string " +
@@ -79,6 +133,25 @@ public class DatabaseTaskDao extends AbstractDao implements TaskDao {
              ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {
                 result.add(fetchTaskFour(resultSet));
+            }
+        }
+        return result;
+    }
+
+    public List<Model> getOrderIdsByCustomerName(String companyName) throws SQLException {
+        List<Model> result = new ArrayList<>();
+        String sql = "SELECT customers.companyname AS company, array_to_string " +
+            "(array_agg(orders.orderid), ',') AS orderid FROM customers " +
+            "JOIN orders ON customers.customerid = orders.customerid " +
+            "GROUP BY customers.companyname " +
+            "HAVING customers.companyname=? " +
+            "ORDER BY companyname";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, companyName);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(fetchTaskFour(resultSet));
+                }
             }
         }
         return result;
