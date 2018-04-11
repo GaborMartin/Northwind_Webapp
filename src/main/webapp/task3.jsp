@@ -3,9 +3,10 @@
 <!doctype html>
 <html lang="en">
 <body>
+<a href="index.jsp">Back to main</a><br>
 <form action="task3" method="get">
-    Filter:<br>
-    <input type="text" name="filter"><br>
+    <h1>Filter: (Get company by name)</h1>
+    <br><input type="text" name="filter"><br>
     <input type="submit" value="Filter">
 </form>
 <h1>Result:</h1>

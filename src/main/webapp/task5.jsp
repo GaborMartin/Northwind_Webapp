@@ -3,6 +3,12 @@
 <!doctype html>
 <html lang="en">
 <body>
+<a href="index.jsp">Back to main</a><br>
+<form action="task5" method="get">
+    <h1>Filter: (Get the cheaper products than a given price)</h1>
+    <br><input type="text" name="filter"><br>
+    <input type="submit" value="Filter">
+</form>
 <h1>Result:</h1>
 <table>
     <thead>
