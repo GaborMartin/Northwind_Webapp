@@ -35,7 +35,7 @@ public class DatabaseTaskDao extends AbstractDao implements TaskDao {
     @Override
     public List<Model> getTaskTwoResult() throws SQLException {
         List<Model> result = new ArrayList<>();
-        String sql = "SELECT companyname AS Company, Count(products.supplierid) AS NumberOfProducts " +
+        String sql = "SELECT companyname AS Company, Count(products.supplierid) AS numberofproducts " +
             "FROM suppliers " +
             "JOIN products ON suppliers.supplierid=products.supplierid " +
             "GROUP BY companyname " +
@@ -71,7 +71,7 @@ public class DatabaseTaskDao extends AbstractDao implements TaskDao {
     public List<Model> getTaskFourResult() throws SQLException {
         List<Model> result = new ArrayList<>();
         String sql = "SELECT customers.companyname AS company, array_to_string " +
-            "(array_agg(orders.orderid), ',') AS orderids FROM customers " +
+            "(array_agg(orders.orderid), ',') AS orderid FROM customers " +
             "JOIN orders ON customers.customerid = orders.customerid " +
             "GROUP BY customers.companyname " +
             "ORDER BY companyname";
@@ -94,7 +94,7 @@ public class DatabaseTaskDao extends AbstractDao implements TaskDao {
             "SELECT products.supplierid, " +
             "MAX(products.unitprice) AS maxPrice " +
             "FROM products " +
-            "GROUP BY supplierid) AS b" +
+            "GROUP BY supplierid) AS b " +
             "ON b.supplierid = suppliers.supplierid AND products.unitprice = b.maxPrice " +
             "ORDER BY unitprice DESC, company ASC, product ASC";
         try (Statement statement = connection.createStatement();
@@ -109,7 +109,7 @@ public class DatabaseTaskDao extends AbstractDao implements TaskDao {
     private Model fetchTaskOne(ResultSet resultSet) throws SQLException {
         String company = resultSet.getString("company");
         String product = resultSet.getString("product");
-        return new Model(company, product);
+        return new Model(company, product, null);
     }
 
     private Model fetchTaskTwo(ResultSet resultSet) throws SQLException {
@@ -125,13 +125,13 @@ public class DatabaseTaskDao extends AbstractDao implements TaskDao {
 
     private Model fetchTaskFour(ResultSet resultSet) throws SQLException {
         String company = resultSet.getString("company");
-        String orderIds = resultSet.getString("orderids");
-        return new Model(company, orderIds);
+        String orderIds = resultSet.getString("orderid");
+        return new Model(company, null ,orderIds);
     }
 
     private Model fetchTaskFive(ResultSet resultSet) throws SQLException {
         String company = resultSet.getString("company");
-        String product = resultSet.getString("orderids");
+        String product = resultSet.getString("product");
         int price = resultSet.getInt("price");
         return new Model(company, product, price);
     }
