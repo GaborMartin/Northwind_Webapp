@@ -4,12 +4,13 @@ public class Model {
     private String company;
     private String product;
     private int numberofproducts;
-    private String orderids;
+    private String orderid;
     private int price;
 
-    public Model(String company, String product) {
+    public Model(String company, String product, String orderid) {
         this.company = company;
         this.product = product;
+        this.orderid = orderid;
     }
 
     public Model(String company, int numberofproducts) {
@@ -35,12 +36,12 @@ public class Model {
         return product;
     }
 
-    public int getNumberOfProducts() {
+    public int getnumberofproducts() {
         return numberofproducts;
     }
 
-    public String getOrderIds() {
-        return orderids;
+    public String getorderid() {
+        return orderid;
     }
 
     public int getPrice() {
