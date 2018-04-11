@@ -22,11 +22,18 @@ public class TaskThreeServlet extends AbstractServlet {
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskDao taskDao = new DatabaseTaskDao(connection);
             TaskService taskService = new SimpleTaskService(taskDao);
-            List<Model> result = taskService.getResulOfTaskThree();
-            req.setAttribute("result", result);
+            String companyName = req.getParameter("filter");
+
+            if (companyName == null || companyName.equals("")) {
+                List<Model> result = taskService.getResultOfTaskThree();
+                req.setAttribute("result", result);
+            } else {
+                List<Model> filteredResult = taskService.getTaskThreeFilteredResult(companyName);
+                req.setAttribute("result", filteredResult);
+            }
         } catch (SQLException | ServiceException e) {
             req.setAttribute("error", e.getMessage());
         }
-        req.getRequestDispatcher("task3.jsp").forward(req,resp);
+        req.getRequestDispatcher("task3.jsp").forward(req, resp);
     }
 }

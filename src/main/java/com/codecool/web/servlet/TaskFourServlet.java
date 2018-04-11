@@ -22,8 +22,14 @@ public class TaskFourServlet extends AbstractServlet {
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskDao taskDao = new DatabaseTaskDao(connection);
             TaskService taskService = new SimpleTaskService(taskDao);
-            List<Model> result = taskService.getResulOfTaskFour();
-            req.setAttribute("result", result);
+            String companyName = req.getParameter("filter");
+            if (companyName == null || companyName.equals("")) {
+                List<Model> result = taskService.getResultOfTaskFour();
+                req.setAttribute("result", result);
+            } else {
+                List<Model> filteredResult = taskService.getTaskFourFilteredResult(companyName);
+                req.setAttribute("result", filteredResult);
+            }
         } catch (SQLException | ServiceException e) {
             req.setAttribute("error", e.getMessage());
         }

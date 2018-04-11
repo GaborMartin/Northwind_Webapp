@@ -22,7 +22,7 @@ public class TaskFiveServlet extends AbstractServlet {
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskDao taskDao = new DatabaseTaskDao(connection);
             TaskService taskService = new SimpleTaskService(taskDao);
-            List<Model> result = taskService.getResulOfTaskFive();
+            List<Model> result = taskService.getResultOfTaskFive();
             req.setAttribute("result", result);
         } catch (SQLException | ServiceException e) {
             req.setAttribute("error", e.getMessage());
