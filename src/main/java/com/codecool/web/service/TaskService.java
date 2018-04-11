@@ -8,9 +8,13 @@ import java.util.List;
 
 public interface TaskService {
 
-    List<Model> getResulOfTaskOne() throws ServiceException, SQLException;
-    List<Model> getResulOfTaskTwo() throws ServiceException;
-    List<Model> getResulOfTaskThree() throws ServiceException;
-    List<Model> getResulOfTaskFour() throws ServiceException;
-    List<Model> getResulOfTaskFive() throws ServiceException;
+    List<Model> getResultOfTaskOne() throws ServiceException, SQLException;
+    List<Model> getTaskOneFilteredResult(String companyName) throws ServiceException, SQLException;
+    List<Model> getResultOfTaskTwo() throws ServiceException;
+    List<Model> getTaskTwoFilteredResult(int numOfProducts) throws ServiceException;
+    List<Model> getResultOfTaskThree() throws ServiceException;
+    List<Model> getTaskThreeFilteredResult(String companyName) throws ServiceException;
+    List<Model> getResultOfTaskFour() throws ServiceException;
+    List<Model> getTaskFourFilteredResult(String companyName) throws ServiceException;
+    List<Model> getResultOfTaskFive() throws ServiceException;
 }
